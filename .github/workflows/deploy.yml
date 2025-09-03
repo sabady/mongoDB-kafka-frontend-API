@@ -1,0 +1,91 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install SOPS
+      uses: mozilla/sops-action@v1.0.0
+      with:
+        command: install
+
+    - name: Decrypt secrets
+      run: |
+        # Decrypt environment files
+        sops -d env.dev.yaml > .env.dev
+        
+        # Decrypt Kubernetes secrets
+        sops -d Kubernetes/kubernetes-secrets.enc.yaml > Kubernetes/kubernetes-secrets.yaml
+        
+        # List decrypted files for verification
+        ls -la .env.dev
+        ls -la Kubernetes/kubernetes-secrets.yaml
+
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+
+    - name: Configure kubectl
+      run: |
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig.yaml
+        export KUBECONFIG=kubeconfig.yaml
+        
+        # Test connection
+        kubectl cluster-info
+
+    - name: Deploy to Kubernetes
+      run: |
+        export KUBECONFIG=kubeconfig.yaml
+        
+        # Apply namespace first
+        kubectl apply -f Kubernetes/namespace.yaml
+        
+        # Apply decrypted secrets
+        kubectl apply -f Kubernetes/kubernetes-secrets.yaml
+        
+        # Apply MongoDB deployment
+        kubectl apply -f Kubernetes/mongodb-deployment.yaml
+        
+        # Wait for deployment to be ready
+        kubectl wait --for=condition=available --timeout=300s deployment/mongodb -n unity-database
+        
+        # Show deployment status
+        kubectl get all -n unity-database
+
+    - name: Cleanup decrypted files
+      if: always()
+      run: |
+        # Remove decrypted files for security
+        rm -f .env.dev
+        rm -f Kubernetes/kubernetes-secrets.yaml
+        rm -f kubeconfig.yaml
+
+    - name: Deployment Status
+      if: success()
+      run: |
+        echo "✅ Deployment completed successfully!"
+        echo "MongoDB is running in namespace 'unity-database'"
+        
+    - name: Deployment Status
+      if: failure()
+      run: |
+        echo "❌ Deployment failed!"
+        echo "Check the logs above for details"

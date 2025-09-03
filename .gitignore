@@ -12,6 +12,14 @@ build/
 .env
 .env.local
 .env.production
+.env.dev
+.env.prod
+
+# SOPS age key
+.age-key
+
+# SOPS encrypted files (these are safe to commit)
+# *.enc.yaml
 
 # Logs
 logs/

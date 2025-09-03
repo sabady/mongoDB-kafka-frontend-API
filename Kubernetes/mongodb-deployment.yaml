@@ -117,15 +117,5 @@ data:
       bindIp: 0.0.0.0
     security:
       authorization: enabled
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mongodb-secret
-  labels:
-    app: mongodb
-    component: database
-type: Opaque
-data:
-  username: bW9uZ28=  # "mongo" in base64
-  password: bW9uZ29wYXNz  # "mongopass" in base64
+# Secrets are now managed in kubernetes-secrets.enc.yaml
+# This file is encrypted with SOPS and decrypted during deployment

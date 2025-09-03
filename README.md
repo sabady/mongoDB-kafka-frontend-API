@@ -104,6 +104,8 @@ unity-api/
 - **Rate Limiting**: Prevents API abuse with configurable limits
 - **Input Validation**: JSON body size limits and validation
 - **Error Handling**: Secure error messages (no sensitive data in production)
+- **SOPS Encryption**: Secrets encrypted with SOPS for secure GitOps workflows
+- **Kubernetes Secrets**: Secure secret management for containerized deployments
 
 ## 🧪 Testing
 
@@ -120,9 +122,20 @@ npm run lint:fix    # Automatically fix linting issues
 
 ## 🚀 Deployment
 
+### Local Development
 1. Build the application: `npm run build`
-2. Set production environment variables
-3. Start the server: `npm start`
+2. Decrypt secrets: `./scripts/decrypt-secrets.sh`
+3. Set environment variables
+4. Start the server: `npm start`
+
+### Kubernetes Deployment
+1. Set up SOPS encryption: `./scripts/setup-sops.sh`
+2. Encrypt secrets: `./scripts/encrypt-secrets.sh`
+3. Push encrypted secrets to Git
+4. GitHub Actions will automatically deploy to Kubernetes
+
+### SOPS Setup
+For detailed SOPS setup instructions, see [docs/SOPS_SETUP.md](docs/SOPS_SETUP.md)
 
 ## 🤝 Contributing
 

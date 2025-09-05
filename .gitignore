@@ -46,3 +46,15 @@ coverage/
 # OS
 .DS_Store
 Thumbs.db
+
+# Large files and binaries
+minikube-linux-amd64
+*.bin
+*.exe
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+*.7z

@@ -2,22 +2,22 @@ creation_rules:
   # Development environment
   - path_regex: \.env\.dev\.enc\.yaml$
     age: >-
-      age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p
+      age1wfskjehsyd5v49hxjq79mt5y0htjx747aw24jk0ypdkm6tl08fuq9m956q
     encrypted_regex: ^(data|stringData)$
   
   # Production environment
   - path_regex: \.env\.prod\.enc\.yaml$
     age: >-
-      age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p
+      age1wfskjehsyd5v49hxjq79mt5y0htjx747aw24jk0ypdkm6tl08fuq9m956q
     encrypted_regex: ^(data|stringData)$
   
   # Kubernetes secrets
   - path_regex: kubernetes-secrets.*\.enc\.yaml$
     age: >-
-      age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p
+      age1wfskjehsyd5v49hxjq79mt5y0htjx747aw24jk0ypdkm6tl08fuq9m956q
     encrypted_regex: ^(data|stringData)$
 
 # Default rule for any other encrypted files
   - age: >-
-      age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p
+      age1wfskjehsyd5v49hxjq79mt5y0htjx747aw24jk0ypdkm6tl08fuq9m956q
     encrypted_regex: ^(data|stringData)$

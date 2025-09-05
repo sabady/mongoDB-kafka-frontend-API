@@ -1,4 +1,4 @@
-# Unity API
+# API
 
 A modern, secure, and scalable backend API built with Node.js, Express, and TypeScript.
 
@@ -6,13 +6,17 @@ A modern, secure, and scalable backend API built with Node.js, Express, and Type
 
 - **TypeScript**: Full TypeScript support with strict type checking
 - **Express.js**: Fast, unopinionated web framework
+- **MongoDB Integration**: Data persistence with Mongoose ODM
+- **Kafka Integration**: Real-time message processing with KRaft mode
+- **Web Application**: Customer-facing web interface with purchase system
 - **Security**: Helmet, CORS, rate limiting, and security headers
-- **Logging**: Morgan HTTP request logger
+- **Logging**: Winston structured logging with Morgan HTTP logger
 - **Compression**: Response compression for better performance
 - **Environment Configuration**: Flexible environment variable management
-- **Health Checks**: Built-in health monitoring endpoint
+- **Health Checks**: Comprehensive health monitoring endpoints
 - **Error Handling**: Global error handling with proper HTTP status codes
 - **Rate Limiting**: API rate limiting to prevent abuse
+- **SOPS Encryption**: Secure secrets management for GitOps workflows
 
 ## 📋 Prerequisites
 
@@ -24,7 +28,7 @@ A modern, secure, and scalable backend API built with Node.js, Express, and Type
 1. **Clone the repository:**
    ```bash
    git clone <your-repo-url>
-   cd unity-api
+   cd api
    ```
 
 2. **Install dependencies:**
@@ -51,6 +55,18 @@ npm run dev
 ```
 This starts the server with nodemon for automatic reloading.
 
+### Web Application (Full Stack)
+```bash
+# Start the complete web application (API + Kafka Producer + Web UI)
+./scripts/start-web-app.sh
+
+# Test the web application
+./scripts/test-web-app.sh
+
+# Access the web application
+open http://localhost:3000
+```
+
 ### Production Mode
 ```bash
 npm run build
@@ -60,19 +76,45 @@ npm start
 ## 📚 Available Scripts
 
 - `npm run dev` - Start development server with hot reload
+- `npm run dev:producer` - Start Kafka producer service
+- `npm run dev:all` - Start both API and producer services
 - `npm run build` - Build TypeScript to JavaScript
 - `npm start` - Start production server
+- `npm run start:producer` - Start Kafka producer service
 - `npm test` - Run tests
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Fix ESLint issues automatically
 
 ## 🌐 API Endpoints
 
-### Health Check
+### Web Application
+- `GET /` - Customer-facing web application
 - `GET /health` - Server health status
+- `GET /health/detailed` - Detailed health check with dependencies
+- `GET /health/ready` - Kubernetes readiness probe
+- `GET /health/live` - Kubernetes liveness probe
+- `GET /health/metrics` - System metrics
 
-### API v1
-- `GET /api/v1` - API information and available endpoints
+### Users API
+- `GET /api/users` - Get all users (with pagination and filtering)
+- `GET /api/users/:id` - Get user by ID
+- `POST /api/users` - Create new user
+- `PUT /api/users/:id` - Update user
+- `DELETE /api/users/:id` - Delete user (soft delete)
+- `GET /api/users/:id/events` - Get user events
+
+### Events API
+- `GET /api/events` - Get all events (with pagination and filtering)
+- `GET /api/events/:id` - Get event by ID
+- `POST /api/events` - Create new event
+- `GET /api/events/stats` - Get event statistics
+- `POST /api/events/retry` - Retry failed events
+- `GET /api/events/type/:type` - Get events by type
+
+### Kafka Producer Service (Port 3001)
+- `GET /health` - Producer health check
+- `POST /produce` - Send message to Kafka
+- `POST /purchase` - Send purchase event to Kafka
 
 ## 🔧 Configuration
 
@@ -87,7 +129,7 @@ The application can be configured using environment variables:
 ## 🏗️ Project Structure
 
 ```
-unity-api/
+api/
 ├── src/
 │   └── index.ts          # Main application entry point
 ├── dist/                 # Compiled JavaScript (generated)
@@ -136,6 +178,12 @@ npm run lint:fix    # Automatically fix linting issues
 
 ### SOPS Setup
 For detailed SOPS setup instructions, see [docs/SOPS_SETUP.md](docs/SOPS_SETUP.md)
+
+### Web Application
+For detailed web application documentation, see [docs/WEB_APPLICATION.md](docs/WEB_APPLICATION.md)
+
+### API Documentation
+For complete API documentation, see [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
 
 ## 🤝 Contributing
 

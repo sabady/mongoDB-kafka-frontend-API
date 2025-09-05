@@ -1,6 +1,6 @@
-# SOPS Setup Guide for Unity API
+# SOPS Setup Guide for API
 
-This guide explains how to set up and use SOPS (Secrets OPerationS) for encrypting sensitive configuration files in the Unity API project.
+This guide explains how to set up and use SOPS (Secrets OPerationS) for encrypting sensitive configuration files in the API project.
 
 ## 🔐 What is SOPS?
 

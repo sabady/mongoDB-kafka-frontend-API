@@ -64,8 +64,16 @@ jobs:
         # Apply MongoDB deployment
         kubectl apply -f Kubernetes/mongodb-deployment.yaml
         
-        # Wait for deployment to be ready
+        # Apply Kafka deployment
+        kubectl apply -f Kubernetes/kafka-deployment.yaml
+        
+        # Apply Unity API deployment
+        kubectl apply -f Kubernetes/api-deployment.yaml
+        
+        # Wait for deployments to be ready
         kubectl wait --for=condition=available --timeout=300s deployment/mongodb -n unity-database
+        kubectl wait --for=condition=available --timeout=300s deployment/kafka -n unity-database
+        kubectl wait --for=condition=available --timeout=300s deployment/unity-api -n unity-database
         
         # Show deployment status
         kubectl get all -n unity-database
@@ -82,7 +90,17 @@ jobs:
       if: success()
       run: |
         echo "✅ Deployment completed successfully!"
-        echo "MongoDB is running in namespace 'unity-database'"
+        echo "MongoDB, Kafka (KRaft mode), and Unity API are running in namespace 'unity-database'"
+        echo ""
+        echo "Services available:"
+        echo "- MongoDB: mongodb-service:27017"
+        echo "- Kafka: kafka-service:9092 (KRaft mode - no Zookeeper)"
+        echo "- Unity API: unity-api-service:3000"
+        echo ""
+        echo "API Endpoints:"
+        echo "- Health Check: /health"
+        echo "- Users API: /api/users"
+        echo "- Events API: /api/events"
         
     - name: Deployment Status
       if: failure()

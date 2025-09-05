@@ -1,17 +1,22 @@
 {
-  "name": "unity-api",
+  "name": "api",
   "version": "1.0.0",
-  "description": "Unity Backend API",
+  "description": "Backend API",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
+    "start:producer": "node dist/kafka-producer-service.js",
+    "start:demo": "node dist/demo-server.js",
     "dev": "nodemon src/index.ts",
+    "dev:producer": "nodemon src/kafka-producer-service.ts",
+    "dev:demo": "nodemon src/demo-server.ts",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:producer\"",
     "build": "tsc",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   },
-  "keywords": ["unity", "api", "backend", "nodejs", "typescript"],
+  "keywords": ["api", "backend", "nodejs", "typescript"],
   "author": "Shany",
   "license": "MIT",
   "dependencies": {
@@ -21,7 +26,11 @@
     "morgan": "^1.10.0",
     "dotenv": "^16.3.1",
     "express-rate-limit": "^7.1.5",
-    "compression": "^1.7.4"
+    "compression": "^1.7.4",
+    "mongoose": "^8.0.3",
+    "kafkajs": "^2.2.4",
+    "winston": "^3.11.0",
+    "express-validator": "^7.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -35,7 +44,8 @@
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.2",
+    "concurrently": "^8.2.2"
   },
   "engines": {
     "node": ">=18.0.0"
